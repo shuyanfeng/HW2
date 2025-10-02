@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: stock-analyzer-ai
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && python main.py
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: /api/$1
+      - type: rewrite
+        source: /*
+        destination: /index.html
